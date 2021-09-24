@@ -25,7 +25,7 @@ body .react-calendar__navigation button[disabled] {
   cursor: initial;
 }
 
-body .react-calendar button {
+body .react-calendar .react-calendar__month-view  button {
   position: relative;
   padding-top: 30px;
   padding-right: 8px;
@@ -33,7 +33,7 @@ body .react-calendar button {
   display: grid;
 }
 
-body .react-calendar button abbr {
+body .react-calendar .react-calendar__month-view button abbr {
   position: absolute;
   top: 8px;
   right: 8px;

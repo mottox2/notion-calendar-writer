@@ -15,15 +15,7 @@ import styles from "../styles/Home.module.css";
 
 dayjs.extend(utc);
 
-const formatDate = (date: Date) => {
-  return date.toISOString().split("T")[0];
-};
-
-const Home: NextPage = () => {
-  const [range, setRange] = useState({
-    start: "",
-    end: "",
-  });
+const useCalendarItems = () => {
   const [items, setItems] = useState<Page[]>([]);
   const [itemByDate, setItemByDate] = useState<Record<string, RichText[]>>({});
 
@@ -51,6 +43,16 @@ const Home: NextPage = () => {
     console.log(itemByDates);
   }, [items]);
 
+  return itemByDate;
+};
+
+const Home: NextPage = () => {
+  const [range, setRange] = useState({
+    start: "",
+    end: "",
+  });
+  const itemByDate = useCalendarItems();
+
   return (
     <div>
       <Head>
@@ -75,10 +77,15 @@ const Home: NextPage = () => {
           return (
             <div>
               {items.map((title, i) => {
-                if (!title) return <p>untitled</p>;
                 return (
-                  <p className={styles.cell} key={i}>
-                    {title.plain_text}
+                  <p
+                    className={styles.cell}
+                    key={i}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                  >
+                    {title ? title.plain_text : "untitled"}
                   </p>
                 );
               })}
