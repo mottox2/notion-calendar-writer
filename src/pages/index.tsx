@@ -4,12 +4,16 @@ import {
   RichText,
   TitlePropertyValue,
 } from "@notionhq/client/build/src/api-types";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import styles from "../styles/Home.module.css";
+
+dayjs.extend(utc);
 
 const formatDate = (date: Date) => {
   return date.toISOString().split("T")[0];
@@ -21,7 +25,7 @@ const Home: NextPage = () => {
     end: "",
   });
   const [items, setItems] = useState<Page[]>([]);
-  const [itemByDate, setItemByDate] = useState<Record<string, any[]>>({});
+  const [itemByDate, setItemByDate] = useState<Record<string, RichText[]>>({});
 
   useEffect(() => {
     fetch("/api/get-items").then((res) => {
@@ -58,33 +62,31 @@ const Home: NextPage = () => {
         onChange={(value: Date[]) => {
           const [start, end] = value;
           setRange({
-            start: formatDate(start),
-            end: formatDate(end),
+            start: dayjs(start).format("YYYY-MM-DD"),
+            end: dayjs(end).format("YYYY-MM-DD"),
           });
-          console.log({ start, end });
         }}
-        // formatDay={(_locale, d) => {
-        //   return formatDate(d);
-        // }}
-        tileContent={({ activeStartDate, date }) => {
-          const day = new Date(date).toISOString().split("T")[0];
+        tileContent={({ date }: { date: string }) => {
+          const day = dayjs(dayjs(date).format("YYYY-MM-DD")).format(
+            "YYYY-MM-DD"
+          );
           const items = itemByDate[day];
-          console.log(day, items);
           if (!items) return;
           return (
             <div>
-              {items.map((title) => {
+              {items.map((title, i) => {
                 if (!title) return <p>untitled</p>;
-                return <p>{title.plain_text}</p>;
-                return <p>{JSON.stringify(title, null, 2)}</p>;
+                return (
+                  <p className={styles.cell} key={i}>
+                    {title.plain_text}
+                  </p>
+                );
               })}
             </div>
           );
-          return date.getDay() === 0 ? (
-            <p className={styles.cell}>It's Sunday!</p>
-          ) : (
-            <p className={styles.cell}></p>
-          );
+        }}
+        formatDay={(_l: any, d: Date) => {
+          return d.getDate();
         }}
         selectRange={true}
         minDetail="month"

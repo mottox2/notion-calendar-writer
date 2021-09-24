@@ -1,3 +1,11 @@
 .cell {
-  height: 80px;
+  padding: 2px 8px;
+  border: 1px solid #eee;
+  border-radius: 2px;
+  margin: 4px 0;
+  text-align: left;
+  font-size: 12px;
+  box-shadow: rgb(15 15 15 / 10%) 0px 0px 0px 1px, rgb(15 15 15 / 10%) 0px 2px 4px;
+  background-color: white;
+  color: black;
 }

@@ -24,3 +24,18 @@ body .react-calendar__navigation button[disabled] {
   background: inherit;
   cursor: initial;
 }
+
+body .react-calendar button {
+  position: relative;
+  padding-top: 30px;
+  padding-right: 8px;
+  padding-left: 8px;
+  display: grid;
+}
+
+body .react-calendar button abbr {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 14px;
+}
