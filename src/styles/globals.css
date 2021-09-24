@@ -14,3 +14,13 @@ a {
 * {
   box-sizing: border-box;
 }
+
+body .react-calendar {
+  border: none;
+  width: auto;
+}
+
+body .react-calendar__navigation button[disabled] {
+  background: inherit;
+  cursor: initial;
+}
